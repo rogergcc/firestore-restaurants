@@ -1,2 +1,2 @@
-# friendlyeats-android
+# FIRE Restaurant -android
  restaurant recomendations 
