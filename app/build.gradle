@@ -1,0 +1,78 @@
+apply plugin: 'com.android.application'
+
+android {
+    signingConfigs {
+        release {
+
+            def credsFilePath = file("../credentials.json").toString()
+            def credsFile = new File(credsFilePath, "").getText('UTF-8')
+            def json = new groovy.json.JsonSlurper().parseText(credsFile)
+            storeFile file(json.android.storeFile)
+            storePassword = json.android.storePassword
+            keyAlias = json.android.keyAlias
+            keyPassword = json.android.keyPassword
+        }
+    }
+    compileSdkVersion 30
+    buildToolsVersion '30.0.0'
+    defaultConfig {
+        applicationId 'com.rogergcc.firestorediscovereats'
+        minSdkVersion 16
+        targetSdkVersion 30
+        versionCode 1
+        versionName '1.0'
+
+        multiDexEnabled true
+        vectorDrawables.useSupportLibrary true
+    }
+    buildTypes {
+//        release {
+//            minifyEnabled false
+//            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+//        }
+        release {
+            signingConfig signingConfigs.release
+            debuggable false
+            //minifyEnabled true
+
+            //shrinkResources true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+}
+
+dependencies {
+    // Firestore
+    implementation 'com.google.firebase:firebase-firestore:22.0.1'
+
+    // Other Firebase/Play services deps
+    implementation 'com.google.firebase:firebase-auth:20.0.1'
+    implementation 'com.google.android.gms:play-services-auth:19.0.0'
+
+    // FirebaseUI (for authentication)
+    implementation 'com.firebaseui:firebase-ui-auth:7.1.1'
+
+    // Support Libs
+    implementation 'androidx.appcompat:appcompat:1.2.0'
+    implementation 'androidx.vectordrawable:vectordrawable-animated:1.1.0'
+    implementation 'androidx.cardview:cardview:1.0.0'
+    implementation 'androidx.browser:browser:1.0.0'
+    implementation 'com.google.android.material:material:1.2.1'
+    implementation 'androidx.multidex:multidex:2.0.1'
+    implementation 'androidx.recyclerview:recyclerview:1.1.0'
+
+    // Android architecture components
+    implementation 'androidx.lifecycle:lifecycle-runtime:2.2.0'
+    implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
+    annotationProcessor 'androidx.lifecycle:lifecycle-compiler:2.2.0'
+
+    // Third-party libraries
+    implementation 'me.zhanghai.android.materialratingbar:library:1.4.0'
+    implementation 'com.github.bumptech.glide:glide:4.11.0'
+}
+
+apply plugin: 'com.google.gms.google-services'
