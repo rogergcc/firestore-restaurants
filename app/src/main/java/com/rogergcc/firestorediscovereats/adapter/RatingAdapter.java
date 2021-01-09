@@ -16,18 +16,16 @@
  package com.rogergcc.firestorediscovereats.adapter;
 
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.rogergcc.firestorediscovereats.R;
-import com.rogergcc.firestorediscovereats.model.Rating;
 import com.google.firebase.firestore.Query;
+import com.rogergcc.firestorediscovereats.databinding.ItemRatingBinding;
+import com.rogergcc.firestorediscovereats.model.Rating;
 
-import me.zhanghai.android.materialratingbar.MaterialRatingBar;
+import java.util.Objects;
 
 /**
  * RecyclerView adapter for a bunch of Ratings.
@@ -41,32 +39,42 @@ public class RatingAdapter extends FirestoreAdapter<RatingAdapter.ViewHolder> {
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new ViewHolder(LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.item_rating, parent, false));
+        LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
+        ItemRatingBinding binding = ItemRatingBinding.inflate(layoutInflater,parent,false);
+        return new ViewHolder(binding);
+
+//        return new ViewHolder(LayoutInflater.from(parent.getContext())
+//                .inflate(R.layout.item_rating, parent, false));
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        holder.bind(getSnapshot(position).toObject(Rating.class));
+
+        holder.bind(Objects.requireNonNull(getSnapshot(position).toObject(Rating.class)));
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
 
-        TextView nameView;
-        MaterialRatingBar ratingBar;
-        TextView textView;
+//        TextView nameView;
+//        MaterialRatingBar ratingBar;
+//        TextView textView;
+//
+//        public ViewHolder(View itemView) {
+//            super(itemView);
+//            nameView = itemView.findViewById(R.id.rating_item_name);
+//            ratingBar = itemView.findViewById(R.id.rating_item_rating);
+//            textView = itemView.findViewById(R.id.rating_item_text);
+//        }
+        ItemRatingBinding binding;
+        public ViewHolder(@NonNull ItemRatingBinding binding) {
+            super(binding.getRoot());
 
-        public ViewHolder(View itemView) {
-            super(itemView);
-            nameView = itemView.findViewById(R.id.rating_item_name);
-            ratingBar = itemView.findViewById(R.id.rating_item_rating);
-            textView = itemView.findViewById(R.id.rating_item_text);
         }
-
         public void bind(Rating rating) {
-            nameView.setText(rating.getUserName());
-            ratingBar.setRating((float) rating.getRating());
-            textView.setText(rating.getText());
+
+            binding.ratingItemName.setText(rating.getUserName());
+            binding.ratingItemRating.setRating((float) rating.getRating());
+            binding.ratingItemText.setText(rating.getText());
         }
     }
 

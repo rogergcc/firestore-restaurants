@@ -25,6 +25,7 @@ import android.widget.EditText;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.FragmentManager;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.rogergcc.firestorediscovereats.model.Rating;
@@ -46,7 +47,7 @@ public class RatingDialogFragment extends DialogFragment implements View.OnClick
         void onRating(Rating rating);
 
     }
-
+//    DialogRatingBinding binding;
     private RatingListener mRatingListener;
 
     @Nullable
@@ -55,6 +56,7 @@ public class RatingDialogFragment extends DialogFragment implements View.OnClick
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.dialog_rating, container, false);
+
         mRatingBar = v.findViewById(R.id.restaurant_form_rating);
         mRatingText = v.findViewById(R.id.restaurant_form_text);
 
@@ -82,6 +84,21 @@ public class RatingDialogFragment extends DialogFragment implements View.OnClick
 
     }
 
+//    @Override
+//    public void onDestroyView() {
+//        if (getDialog() != null && getRetainInstance())
+//            getDialog().setDismissMessage(null);
+//
+//        super.onDestroyView();
+//    }
+
+    @Override
+    public void show(@NonNull FragmentManager manager, @Nullable String tag) {
+        if (!isAdded()){
+            super.show(manager, tag);
+        }
+
+    }
     @Override
     public void onClick(View v) {
         switch (v.getId()) {

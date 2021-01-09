@@ -1,37 +1,34 @@
 
  package com.rogergcc.firestorediscovereats;
 
-import android.content.Intent;
-import android.os.Bundle;
-import android.text.Html;
-import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.TextView;
-import android.widget.Toast;
+ import android.content.Intent;
+ import android.os.Bundle;
+ import android.text.Html;
+ import android.util.Log;
+ import android.view.Menu;
+ import android.view.MenuItem;
+ import android.view.View;
+ import android.widget.Toast;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
+ import androidx.appcompat.app.AppCompatActivity;
+ import androidx.lifecycle.ViewModelProvider;
+ import androidx.recyclerview.widget.LinearLayoutManager;
 
-import com.firebase.ui.auth.AuthUI;
-import com.google.android.material.snackbar.Snackbar;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.CollectionReference;
-import com.rogergcc.firestorediscovereats.adapter.RestaurantAdapter;
-import com.rogergcc.firestorediscovereats.model.Restaurant;
-import com.rogergcc.firestorediscovereats.util.RestaurantUtil;
-import com.rogergcc.firestorediscovereats.viewmodel.MainActivityViewModel;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreException;
-import com.google.firebase.firestore.Query;
+ import com.firebase.ui.auth.AuthUI;
+ import com.google.android.material.snackbar.Snackbar;
+ import com.google.firebase.auth.FirebaseAuth;
+ import com.google.firebase.firestore.CollectionReference;
+ import com.google.firebase.firestore.DocumentSnapshot;
+ import com.google.firebase.firestore.FirebaseFirestore;
+ import com.google.firebase.firestore.FirebaseFirestoreException;
+ import com.google.firebase.firestore.Query;
+ import com.rogergcc.firestorediscovereats.adapter.RestaurantAdapter;
+ import com.rogergcc.firestorediscovereats.databinding.ActivityMainBinding;
+ import com.rogergcc.firestorediscovereats.model.Restaurant;
+ import com.rogergcc.firestorediscovereats.util.RestaurantUtil;
+ import com.rogergcc.firestorediscovereats.viewmodel.MainActivityViewModel;
 
-import java.util.Collections;
+ import java.util.Collections;
 
 public class MainActivity extends AppCompatActivity implements
         View.OnClickListener,
@@ -44,11 +41,7 @@ public class MainActivity extends AppCompatActivity implements
 
     private static final int LIMIT = 50;
 
-    private Toolbar mToolbar;
-    private TextView mCurrentSearchView;
-    private TextView mCurrentSortByView;
-    private RecyclerView mRestaurantsRecycler;
-    private ViewGroup mEmptyView;
+
 
     private FirebaseFirestore mFirestore;
     private Query mQuery;
@@ -59,21 +52,21 @@ public class MainActivity extends AppCompatActivity implements
     private MainActivityViewModel mViewModel;
     private boolean dialogShown;
 
+    private ActivityMainBinding binding;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+//        setContentView(R.layout.activity_main);
+        binding = ActivityMainBinding.inflate(getLayoutInflater());
+        View view = binding.getRoot();
+        setContentView(view);
+        
+        setSupportActionBar(binding.toolbar);
 
-        mToolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(mToolbar);
 
-        mCurrentSearchView = findViewById(R.id.text_current_search);
-        mCurrentSortByView = findViewById(R.id.text_current_sort_by);
-        mRestaurantsRecycler = findViewById(R.id.recycler_restaurants);
-        mEmptyView = findViewById(R.id.view_empty);
-
-        findViewById(R.id.filter_bar).setOnClickListener(this);
-        findViewById(R.id.button_clear_filter).setOnClickListener(this);
+        binding.filterBar.setOnClickListener(this);
+        binding.buttonClearFilter.setOnClickListener(this);
 
         // View model
         mViewModel = new ViewModelProvider(this).get(MainActivityViewModel.class);
@@ -114,11 +107,11 @@ public class MainActivity extends AppCompatActivity implements
             protected void onDataChanged() {
                 // Show/hide content if the query returns empty.
                 if (getItemCount() == 0) {
-                    mRestaurantsRecycler.setVisibility(View.GONE);
-                    mEmptyView.setVisibility(View.VISIBLE);
+                    binding.recyclerRestaurants.setVisibility(View.GONE);
+                    binding.viewEmpty.setVisibility(View.VISIBLE);
                 } else {
-                    mRestaurantsRecycler.setVisibility(View.VISIBLE);
-                    mEmptyView.setVisibility(View.GONE);
+                    binding.recyclerRestaurants.setVisibility(View.VISIBLE);
+                    binding.viewEmpty.setVisibility(View.GONE);
                 }
             }
 
@@ -130,8 +123,8 @@ public class MainActivity extends AppCompatActivity implements
             }
         };
 
-        mRestaurantsRecycler.setLayoutManager(new LinearLayoutManager(this));
-        mRestaurantsRecycler.setAdapter(mAdapter);
+        binding.recyclerRestaurants.setLayoutManager(new LinearLayoutManager(this));
+        binding.recyclerRestaurants.setAdapter(mAdapter);
     }
 
     @Override
@@ -211,8 +204,8 @@ public class MainActivity extends AppCompatActivity implements
         mAdapter.setQuery(query);
 
         // Set header
-        mCurrentSearchView.setText(Html.fromHtml(filters.getSearchDescription(this)));
-        mCurrentSortByView.setText(filters.getOrderDescription(this));
+        binding.textCurrentSearch.setText(Html.fromHtml(filters.getSearchDescription(this)));
+        binding.textCurrentSearch.setText(filters.getOrderDescription(this));
 
         // Save filters
         mViewModel.setFilters(filters);
