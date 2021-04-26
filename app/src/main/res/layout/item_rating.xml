@@ -16,7 +16,7 @@
         android:maxLines="1"
         android:ellipsize="end"
         android:maxWidth="120dp"
-        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
         tools:text="John Doe" />
 
     <TextView
@@ -24,7 +24,7 @@
         style="@style/AppTheme.TextDivider"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toRightOf="@+id/rating_item_name"
+        android:layout_toEndOf="@+id/rating_item_name"
         android:text="@string/divider_bullet" />
 
     <TextView
@@ -33,8 +33,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="@color/greySecondary"
-        android:layout_toLeftOf="@+id/rating_item_rating"
-        android:layout_toRightOf="@+id/rating_item_divider"
+        android:layout_toStartOf="@+id/rating_item_rating"
+        android:layout_toEndOf="@+id/rating_item_divider"
         tools:text="9/27/2017" />
 
     <me.zhanghai.android.materialratingbar.MaterialRatingBar
@@ -42,7 +42,7 @@
         style="@style/Widget.MaterialRatingBar.RatingBar.Indicator.Small"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentRight="true" />
+        android:layout_alignParentEnd="true" />
 
     <TextView
         android:id="@+id/rating_item_text"

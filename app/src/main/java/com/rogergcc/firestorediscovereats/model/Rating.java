@@ -55,7 +55,7 @@ public class Rating {
     }
 
     public String getUserName() {
-        return userName;
+        return (userName==null)?"":userName;
     }
 
     public void setUserName(String userName) {
@@ -84,5 +84,16 @@ public class Rating {
 
     public void setTimestamp(Date timestamp) {
         this.timestamp = timestamp;
+    }
+
+    @Override
+    public String toString() {
+        return "Rating{" +
+                "userId='" + userId + '\'' +
+                ", userName='" + userName + '\'' +
+                ", rating=" + rating +
+                ", text='" + text + '\'' +
+                ", timestamp=" + timestamp +
+                '}';
     }
 }
